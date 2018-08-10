@@ -1,0 +1,65 @@
+ <!--<nav style="color:#0C9BDD;" class="navbar navbar-expand-sm bg-info navbar-dark sticky-top" id="navbar_principal">
+    Brand/logo
+  <a class="navbar-brand" href="#">
+    <img src="bird.jpg" alt="logo" style="width:40px;">
+  </a>
+  
+  Links 
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="#">Link 1</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Link 2</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Link 3</a>
+    </li>
+  </ul>
+</nav>
+<hr>-->
+
+{% load static %}
+
+<nav class = "navbar navbar-expand-sm navbar-custom sticky-top"> 
+  
+    
+    <!--<a href="/" class="navbar-brand">light</a>
+    <div class="row">
+      <div class="col-md-4">hola</div>
+      <div class="col-md-4">hola</div>
+      <div class="col-md-4">hola</div>
+    </div>-->
+    <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="#"><strong>Inicio</strong></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#"><strong>Notificaciones</strong></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" data-toggle="modal" data-target="#ModalMensaje"><strong>Mensajes</strong></a>
+    </li>
+    <li class="nav-icono">
+      <a class="navbar-brand" href="#">
+      <img src="{% static "img/pajaro.png" %}" alt="logo" style="width:30px;"></a>
+    </li>
+    <form class="form-inline my-2 my-lg-0" style="margin-left:150px;">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <li class="nav-imagen-perfil">
+      <a href=""><img src="/media/{{ perfil.avatar }}" alt="foto de perfil" class="" width="40px" style="border-radius:100%; margin-left:20px;"></a>
+    </li>
+    <li style="margin-left:10px;">
+      
+    <button class="btn btn-info my-2 my-sm-0" type="submit">Tweetear</button>
+    
+    </li>
+  
+  </ul>
+</nav>
+
+
+
+

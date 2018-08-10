@@ -1,0 +1,86 @@
+body {
+	/*font-family: 'Helvetica Neue LT Std'*/
+}
+
+#navbar_principal{
+	color:#0C9BDD;
+	
+
+}
+
+.navbar-custom {
+    background-color: #FFFFFF;
+	box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.75);
+    
+}
+.navbar { 
+    max-height: 50px; 
+
+}
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+    color: #A5B1B9;
+}
+/* change the link color */
+.navbar-custom .navbar-nav .nav-link {
+    color: gray;
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: #0C9BDD;
+}
+
+.nav-item {
+	margin-left: 50px;
+}
+
+.nav-icono {
+	margin-left: 180px;
+}
+
+/** {
+  padding: 0;
+  margin: 0;
+}
+p {
+  margin-bottom: 20px;
+}
+.wrapper {
+  width: 80%;
+  margin: auto;
+  overflow:hidden;
+}
+header {
+  background: rgba(0,0,0,0.9);
+  width: 100%;
+  position: fixed;
+  z-index: 10;
+}
+
+nav {
+  float: left; /* Desplazamos el nav hacia la izquierda */
+/*}
+nav ul {
+  list-style: none;
+  overflow: hidden;  Limpiamos errores de float 
+}
+nav ul li {
+  float: left;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
+nav ul li a {
+  display: block;  Convertimos los elementos a en elementos bloque para manipular el padding 
+  padding: 20px;
+  color: #fff;
+  text-decoration: none;
+}
+nav ul li:hover {
+  background: #3ead47;
+}
+.contenido {
+  padding-top: 80px;
+}*/
+}*/

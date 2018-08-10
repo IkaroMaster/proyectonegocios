@@ -1,0 +1,20 @@
+{% extends "base_out.html" %}
+{% block titulo %}
+	Auntenticación
+	
+{% endblock titulo %}
+{% block contenedor %}
+
+
+<div style="margin:0 auto;width:450px;margin-top:10%; border: 0.5px gray solid; border-radius:20px;padding:20px;" class="">
+	<h1 class="text-danger text-justify text-center">Inicio de sesion</h1>
+	<form class="form-group" action="{% url 'seguridad:iniciar_sesion-url' %}" method="post" style="width:400px;" >
+	{% csrf_token %}
+	{{formulario.as_p}}
+	<input style="with : 150px" type="submit" value="Inciar Sesion" class="form-control">
+	</form>
+	
+</div>
+
+
+{% endblock contenedor %}

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block contenedor %}
+
+{% include "navbar.html" %}
+
+	<!-- Button trigger modal 
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  	Launch modal
+	</button>
+	-->
+
+
+<!-- Modal -->
+<div class="modal fade" id="ModalMensaje" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Mensajes </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid" id="contenedorMensajes">
+            {% for c in chat %}
+              {% for p in c.perfiles.all  %}
+                {% if p != perfil %}
+                    <a href=""
+                  class="a-conversacion"  
+                  data-id="{{ c.id }}"
+                  data-url="{% url 'home:mensaje-url' %}" >{{ p.usuario }}</a>
+                  <hr>
+                {% endif %}
+              {% endfor %}
+
+                
+              
+              
+              
+
+            {% endfor %}
+        </div>
+        <div class="container" id="contenedorChat" style="display:none;">
+          <div class="container">
+              <button id="volverMensajes" class=" btn btn-outline-secondary mb-2"><</button>
+            
+          </div>
+
+          <!--CHATTTTTTTTT-->
+            <div class="container chat">
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum esse similique at quas quia quidem voluptatem delectus, natus incidunt ex a sed tenetur accusantium molestias error eos minima eveniet deserunt.</p>
+            </div>
+       
+
+          <div class="container">
+              <form  id="frmEnviarMensaje" action="{% url 'home:enviar_mensaje-url' %}" method="post">
+                {% csrf_token %}
+                <div class="row ">
+                  <div class="formulario_mensaje col-md-10 ">
+                  </div>
+                  <div class="col-md-2">
+                    <input type="submit" value="Enviar" class="btn btn-outline-info" style="color:white; background-color:#00A2EC;">
+                  </div>
+                </div>
+                                
+              </form>
+          </div>
+        </div>
+        
+          				
+								
+		<!-- 	{# <a href="{% url 'home:chat-url' c.id %}">abrir</a> #}
+        	<button 
+				class="btn-primary btn-sm btn-conversacion" 
+				data-id="{{ c.id }}"
+				data-url="{% url 'home:mensaje-url' %}">conversacion</button> -->
+			
+        
+       
+
+      </div>
+     <!--  <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+
+
+
+	
+ 	
+	{% block contenido %}
+		
+	{% endblock contenido %}
+
+{% endblock contenedor %}

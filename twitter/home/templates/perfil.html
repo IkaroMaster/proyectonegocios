@@ -1,0 +1,179 @@
+{% extends "base_in.html" %}
+{% load static %}
+{% block contenido %}
+
+<div class="container-fluid" >
+	<div class="container-fluid row" style="
+	width:100%;
+    height: 320px;
+    overflow: hidden;
+    position: absolute;" >
+		<img src="/media/{{ perfil.portada }}" alt="Portada" tabindex="-1" width="100%" style="position:absolute;left: 0; right:0;margin: 0 auto;
+    ">
+	</div>	
+	
+	<div class="container-fluid row" tabindex="" style="background-color:#FFFFFF; position:absolute;top:60%;box-shadow: 1px 0px 1px 0px rgba(0,0,0,0.75); " width="100%"  >
+		
+		<br>
+		<div class="row container-fluid" >
+			<div class="col-md-3"></div>
+			<div class="col-md-1">
+
+				<strong style="color:gray;">Tweets</strong>
+				<a style="color:#0C9BDD;" href=""><h3 style="margin-top:0px;">{{tweets_publicados.count}}</h3></a>
+				
+			</div>
+			<div class="col-md-1">
+				<strong style="color:gray;">Siguiendo</strong>
+				<a style="color:#0C9BDD;" href=""><h3 style="margin-top:0px;">{{ seguidos.count }}</h3></a>
+			</div>
+			<div class="col-md-1">
+				<strong style="color:gray;">Seguidores</strong>
+				<a style="color:#0C9BDD;" href=""><h3 style="margin-top:0px;">{{ perfiles_siguiendome.count }}</h3></a>
+			</div>
+			<div class="col-md-4">
+				<strong style="color:gray;">Me Gusta(exp)</strong>
+				<a style="color:#0C9BDD;" href=""><h3 style="margin-top:0px;">{{ perfiles_siguiendome.count }}</h3></a>
+			</div>
+			<div class="col-md-2">
+				{% if perfil.usuario != user %}
+					<button 
+								class="btn mt-3 btn-outline-info btn-seguir" 
+								data-id="{{ perfil.id }}"
+								data-url="">Seguir</button>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+	
+
+	<div class="col-md-12" style="position:relative;margin-left:3%;padding:1px; border= 2px solid black;top:220px;">
+		<img src="/media/{{ perfil.avatar }}" alt="foto de perfil" class="" width="15%" style="border-radius:100%;position:absolute;border:5px solid white">
+	</div>
+	
+	<div class="container-fluid row" style="position:absolute;top:440px;">
+		<div class="col-md-3  pl-5 pt-2 ">
+			<br>
+			<a href="" style="color:black;" ><h4><strong>{{perfil.usuario}}</strong></h4></a>
+			<a href="" class="text-muted"><h5 class="pt-0">@{{perfil.usuario}}</h5></a>		
+		<p>{{ perfil.biografia }}</p>
+		<p><strong>{{ perfil.pais }}</strong></p>
+		<p><strong>{{ perfil.sitioweb }}</strong></p>
+	</div>
+		<div class="col-md-6" style="background-color:#FFFFFF;">
+
+			<div >
+				<hr>
+				{% for t in tweets_publicados  %}
+					<div class="row">
+						<div class="col-md-2">
+							<img src="/media/{{t.perfil.avatar}}" alt="foto de perfil"
+							width="100%" class="img-circle">
+						</div>
+						<div class="col-md-10" >
+							<a href="" style="color:black;"><span><strong>{{t.perfil.usuario.get_full_name}}</strong> </span></a><span class="text-muted">@{{ t.perfil.usuario }}</span> .
+							
+							{% if t.fecha_publicacion|timesince <= "24 horas" %}
+   								<span class="text-muted">{{ t.fecha_publicacion|date:"d M" }}</span>
+							{% else %}
+							   <span class="text-muted">{{ t.fecha_publicacion|timesince }}</span>
+							{% endif %}
+
+							<br>
+							<p>
+							{{ t.contenido }}
+							</p>
+							
+							{% if t.multimedia %}
+								<img src="/media/{{t.multimedia}}" alt="publicacion"
+							width="100%" class="img-fluid">
+							{% endif %}
+							<br>
+							<div class="row">
+								<div class="col-md-1">
+									<img src="{% static "img/comentario.png" %}" alt="" width="40px">
+								</div>
+
+								<div class="col-md-1">
+
+									<h5 style="margin-top:7px;color:gray;">
+										{% if t.comentario.count > 0 %}
+											{{t.comentario.count}}
+										{% else %}
+										{% endif %}
+										
+									</h5>
+								</div>
+
+								<div class="col-md-1">
+									<img src="{% static "img/retweet.png" %}" alt="" width="40px">
+								</div>
+								<div class="col-md-1">
+									<h5 style="margin-top:7px;color:gray;">1</h5>
+								</div>
+
+								<div class="col-md-1">
+									<img src="{% static "img/like.png" %}" alt="" width="40px">
+								</div>
+								<div class="col-md-1">
+										
+									<h5 style="margin-top:7px;color:gray;">
+										{% if t.like.likes.count > 0 %}
+											{{t.like.likes.count}}
+										{% else %}
+											{{t.like.likes.count}}
+										{% endif %}
+									</h5>
+								
+								</div>
+
+								<div class="col-md-1">
+									<img src="{% static 'img/mensaje_tweet.png' %}" alt="" width="40px">
+								</div>
+								<div class="col-md-1"></div>
+							</div>
+	
+						</div>
+
+					</div>
+				<hr>
+
+				{% endfor %}
+			</div>
+
+
+
+		</div>
+		<div class="col-md-3 " >
+
+			{% for u in usuarios  %}
+			<div class="container p-md-3" style="background-color:#FFFFFF;">
+				
+				
+					<div class="row" >
+
+						<div class="col-md-4">
+								<img src="/media/{{ u.avatar }}" alt="Photo" style="border-radius:100%;" width="100%" >	
+						</div>
+						<div class="col-md-8">
+
+							<a href="" style="color:black;"><strong>{{ u.usuario.get_full_name }}</strong><span class="text-muted">@{{u.usuario}}</span></a>
+							<br>
+							<br>
+							<a href="" style="border-bottom-right-radius: 50%;border-bottom-left-radius:50%; " class="btn btn-outline-info">Seguir</a>
+						
+						</div>
+					</div>				
+
+			</div>
+			
+				<hr>
+			{% endfor %}
+		</div>
+	</div>
+	
+
+</div>
+	
+{% endblock  %}	

@@ -1,0 +1,165 @@
+<div style="background-color:#E8F4FA;">
+
+			<hr>
+			<form id="frmEnviarTweet" action="{% url 'home:enviar_tweet-url' %}" method="post">		
+				{% csrf_token %}
+				{{ formTweet.as_p }}
+				<input type="submit" value="Tweetear">
+			</form>
+			<br>
+
+		</div>
+		<div class="row">
+
+			<hr>
+			{% for t in tweets  %}
+
+			<div class="row contenedorTweet"  data-id="{{ t.id }}" >
+
+
+
+				<div class="col-md-2">
+					<img src="/media/{{t.perfil.avatar}}" alt="foto de perfil"
+					width="100%" class="img-circle">
+				</div>
+				<div class="col-md-10" >
+					<a href="" style="color:black;"><span><strong>{{t.perfil.usuario.get_full_name}}</strong> </span></a><span class="text-muted">@{{ t.perfil.usuario }}</span> .
+
+					{% if t.fecha_publicacion|timesince >= "23 horas" %}
+						<span class="text-muted">{{ t.fecha_publicacion|date:"d M" }}</span>
+					{% else %}
+						<span class="text-muted">{{ t.fecha_publicacion|timesince }}</span>
+					{% endif %}
+
+					<br>
+					<p>
+						{{ t.contenido }}
+					</p>
+
+					
+					
+
+					<div class="row">
+						<div class="col-md-1">
+							<a href="" data-toggle="modal" data-target="#ModalComentario"
+							class="a-comentario"  
+							data-id="{{ t.id }}"
+							data-url="{% url 'home:comentario-url' %}">
+
+
+							<img src="{% static "img/comentario.png" %}" alt="" width="40px">
+
+
+					
+						</a>
+						</div>
+					</div>
+					<div class="col-md-1">
+
+						<h5 id="contadorComentario{{t.id}}" style="margin-top:7px;color:gray;">
+							{% if t.comentario_set.count %}
+							{{t.comentario_set.count}}
+							{% else %}
+							{% endif %}
+						</h5>
+
+					</div>
+
+					<div class="col-md-1">
+						<img src="{% static "img/retweet.png" %}" alt="" width="40px">
+					</div>
+					<div class="col-md-1">
+						<h5 style="margin-top:7px;color:gray;">1</h5>
+					</div>
+
+					<div class="col-md-1">
+						<a href="" id="tweetLike{{t.id}}" 
+						class="a-like"  
+						data-id="{{ t.id }}"
+						data-url="{% url 'home:like-url' %}">
+
+
+						{% for me_gusto in t.like_set.all %}
+							{% if me_gusto.like == perfil %}
+							<div id="imgLike{{t.id}}">
+
+								<img src="{% static "img/like2.png" %}" alt="" width="25px">
+							</div>
+
+								{{"<!--"}}
+							{% endif %}
+						{% endfor %}
+						{% for me_gusto in t.like_set.all %}
+							{% if me_gusto.like != perfil %}
+								<div id="imgLike{{t.id}}">
+
+									<img src="{% static "img/like.png" %}" alt="" width="40px">
+								</div>
+
+								{{"<!--"}}
+							{% endif %}
+						{% empty %}
+							<div id="imgLike{{t.id}}">
+
+								<img src="{% static "img/like.png" %}" alt="" width="40px">
+
+							</div>
+							{{'<!--'}}
+						{% endfor %}{{"-->"}} 
+
+
+										<!--	{% if t.like_set.get.like == perfil %}
+												<div id="imgLike{{t.id}}"><img src="{% static "img/like2.png" %}" alt="" width="30px"></div>
+											{% else %}
+												<div id="imgLike{{t.id}}"><img src="{% static "img/like.png" %}" alt="" width="40px"></div>
+												{% endif %}-->
+
+												<!--  -->
+
+
+						</a>
+
+					</div>
+					<div class="col-md-1">
+						<div id="idTweetLike{{t.id}}">
+							<h5 style="margin-top:7px;
+
+
+
+												{% for me_gusto in t.like_set.all %}
+
+												{% if me_gusto.like == perfil %}
+												color :red;	
+													{{ '/*' }}			
+													{%endif%}
+													{% if me_gusto.like != perfil  %}
+													 	color : gray;
+
+													 {% endif %} 
+													 {%endfor%}{{ '*/' }}
+
+
+
+										" >
+													 {% if t.like_set.count > 0 %}
+													 {{t.like_set.count}}
+													 {% else %}
+
+													 {% endif %}
+													</h5>
+												</div>	
+
+											</div>
+
+											<div class="col-md-1">
+												<img src="{% static 'img/mensaje_tweet.png' %}" alt="" width="40px">
+											</div>
+											<div class="col-md-1"></div>
+										</div>
+
+									</div>
+
+								</div>
+								<hr>
+
+								{% endfor %}

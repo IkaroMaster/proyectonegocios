@@ -1,0 +1,179 @@
+{% extends "base_in.html" %}
+{% load static %}
+{% block contenido %}
+
+<div class="container-fluid" >
+	<div class="container-fluid row" style="
+	width:100%;
+    height: 320px;
+    overflow: hidden;
+    position: absolute;" >
+		<img src="{% if perfil.portada %}
+			{{ perfil.portada.url }}
+			{% else %}
+			{% static "img/sin-portada.jpg" %}
+		{% endif %}
+
+		" alt="Portada" tabindex="-1" width="100%" style="position:absolute;left: 0; right:0;margin: 0 auto;
+    ">
+	</div>	
+	
+	<div class="container-fluid row" tabindex="" style="background-color:#FFFFFF; position:absolute;top:60%;box-shadow: 1px 0px 1px 0px rgba(0,0,0,0.75); " width="100%"  >
+		
+		<br>
+		<div class="row container-fluid" >
+			<div class="col-md-3"></div>
+			<div class="col-md-1">
+
+				<strong style="color:gray;">Tweets</strong>
+				<a style="color:#0C9BDD;" href=""><h3 style="margin-top:0px;">{{perfil.tweet_set.count}}</h3></a>
+				
+			</div>
+			<div class="col-md-1">
+				<strong style="color:gray;">Siguiendo</strong>
+				<a style="color:#0C9BDD;" href=""><h3 class="seguidos" style="margin-top:0px;">{{ seguidos.seguidos.count }}</h3></a>
+			</div>
+			<div class="col-md-1">
+				<strong style="color:gray;">Seguidores</strong>
+				<a style="color:#0C9BDD;" href=""><h3 style="margin-top:0px;">{{ perfiles_siguiendome.count }}</h3></a>
+			</div>
+			<div class="col-md-4">
+				<strong style="color:gray;">Me Gusta</strong>
+				<a style="color:#0C9BDD;" href=""><h3 style="margin-top:0px;">{{ perfil.like_set.count }}</h3></a>
+			</div>
+			<div class="col-md-2">
+				{% if perfil.usuario != user %}
+					<button 
+								class="btn mt-3 btn-outline-info btn-seguir" 
+								data-id="{{ perfil.id }}"
+								data-url="">Seguir</button>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+	
+
+	<div class="col-md-12" style="position:relative;margin-left:3%;padding:1px; border= 2px solid black;top:220px;">
+		<img src="/media/{{ perfil.avatar }}" alt="foto de perfil" class="" width="15%" style="border-radius:100%;position:absolute;border:5px solid white;background-color: #717166;">
+	</div>
+	
+	<div class="container-fluid row" style="position:absolute;top:440px;">
+		<div class="col-md-3  pl-5 pt-2 ">
+			<br>
+			<a href="" style="color:black;" ><h4><strong>{{perfil.usuario}}</strong></h4></a>
+			<a href="" class="text-muted"><h5 class="pt-0">@{{perfil.usuario}}</h5></a>		
+			<p>{{ perfil.biografia }}</p>
+			<p><strong>{{ perfil.pais }}</strong></p>
+			<p><strong>{{ perfil.sitioweb }}</strong></p>
+			<div class="col-md-12" style="margin-left:1%;background-color:#FFFFFF;">
+				<br>
+				<h3><strong>A quién seguir</strong></h3>
+
+				{% for p in perfiles  %}
+
+					{% if p.usuario != user %}
+					<div class="row" id="div-Seguir{{ p.id }}" >
+
+						<div class="col-md-4">
+							<img src="/media/{{ p.avatar }}" alt="Photo" style="border-radius:100%;" width="100%" >	
+						</div>
+						<div class="col-md-8">
+
+							<a href="" style="color:black;"><strong>{{ p.usuario.get_full_name }}</strong><span class="text-muted">@{{p.usuario}}</span></a>
+							<br>
+							<br>
+							<a href="" id="a-Seguir{{p.id}}" style="border-bottom-right-radius: 50%;border-bottom-left-radius:50%; " class="btn btn-outline-info a-seguir" data-id="{{ p.id }}" data-url="{% url 'home:seguir-url' %}">Seguir</a>
+
+						</div>
+					</div>
+					{% endif %}
+
+				<hr>
+				{% endfor %}
+			</div>
+		</div>
+
+
+				<div class="col-md-9">
+
+					<div class="row">
+					
+					{% for s in seguidos.seguidos.all %}
+						<div class="col-md-3 m-md-3" style="background-color:white;" id="div-SeguirUsuario{{s.usuario.id }}">
+							<div class="container-fluid row" style="
+							width:100%;
+						    height: 320px;
+						    overflow: hidden;
+						    position: absolute;" >
+	
+						        
+						    	
+								<img src="{% if s.portada %}
+											  {{ s.portada.url }}
+										{% else %}
+											{% static "img/sin-portada.jpg" %}
+										{% endif %}" alt="Portada" tabindex="-1" width="100%" style="position:absolute;left: 0; right:0;margin: 0 auto;">
+							
+								
+							</div>
+							
+
+							<div class="container-fluid row" tabindex="" style="background-color:#FFFFFF; position:absolute;top:100%;" width="100%"  >
+								<div class="col-md-4"></div>
+								<div class="col-md-8" style="position: relative;">
+									<br>
+									{% if s.usuario != user %}
+									{% for x in siguiendo_yo.seguidos.all %}
+										{% if s.usuario == x.usuario %}
+											<a href=""  style="border-bottom-right-radius: 50%;border-bottom-left-radius:50%; " class="btn btn-info a-seguirUsuario" data-id="{{ s.usuario.id }}" data-url="{% url 'home:seguir_usuario-url' %}">Unfollow</a>{{"<!--"}}
+										{%endif%}
+									{% endfor %}
+
+									{% for x in siguiendo_yo.seguidos.all %}
+										{% if s.usuario != x.usuario %}
+											<a href=""  style="border-bottom-right-radius: 50%;border-bottom-left-radius:50%; " class="btn btn-outline-info a-seguirUsuario" data-id="{{ s.usuario.id }}" data-url="{% url 'home:seguir_usuario-url' %}">follow</a>{{"<!--"}}
+										{% endif %}
+									{% endfor %}{{"-->"}}
+									
+									{%endif%}
+									
+									
+								</div>
+								<div class="col-md-12">
+									<br>
+
+									<h5>{{ s.usuario.get_full_name }}</h5>
+									<h6>@{{ s.usuario }}</h6>
+									{% if s.biografia %}
+										<p>{{ s.biografia }}</p>
+										
+									{% endif %}
+									
+
+									
+								</div>
+								
+							</div>
+							<div class="col-md-12" style="position:relative;margin-left:1%;padding:1px; border= 2px solid black;top:50%;">
+								<img src="/media/{{ s.avatar }}" alt="foto de perfil" class="" width="70px" style="border-radius:100%;position:relative;border:5px solid white">
+							</div>	
+							
+						</div>
+						
+						
+						
+					{% endfor %}
+						
+					</div>
+				</div>
+		
+	</div>
+
+	
+		
+	
+
+</div>
+	
+{% endblock  %}	

@@ -1,0 +1,41 @@
+		<img src="/media/{{ perfil.portada }}" alt="Portada" tabindex="-1" width="100%" style="position:absolute">
+		<div class="col-md-12" tabindex="" style="background-color:#FFFFFF; position:absolute;top:100px;" width="100%"  >
+			<div class="row">
+				<div class="col-md-4">
+
+				</div>
+				<div class="col-md-8">
+					<br>
+					<a  href="{% url 'home:perfil-url' perfil.id %}" ><h4 style="margin:0px;color:black;" ><strong>{{ user }}</strong></h4></a>
+					<a class="text-muted" href="{% url 'home:perfil-url' perfil.id %}"><h6 style="margin-top:0px;">@{{ user}}</h6></a>
+
+				</div>
+			</div>
+			<br>
+			<div class="row" >
+				<div class="col-md-3">
+
+					<strong style="color:gray;">Tweets</strong>
+					<a style="color:#0C9BDD;" href=""><h3 style="margin-top:0px;">{{tweets_publicados.count}}</h3></a>
+
+				</div>
+				<div class="col-md-4">
+					<strong style="color:gray;">Siguiendo</strong>
+					<a style="color:#0C9BDD;" href=""><h3 style="margin-top:0px;">{{ seguidos.count }}</h3></a>
+				</div>
+				<div class="col-md-4">
+					<strong style="color:gray;">Seguidores</strong>
+					<a style="color:#0C9BDD;" href=""><h3 style="margin-top:0px;">{{ perfiles_siguiendome.count }}</h3></a>
+				</div>
+			</div>
+		</div>
+
+
+		<img src="/media/{{ perfil.avatar }}" alt="foto de perfil" class="" width="30%" style="position:relative; margin-top:60px;margin-left:20px;padding:1px; border= 2px solid black;border-radius:100%;">
+
+		<div class="col-md-12" style="margin-top:130px; background-color:#FFFFFF; position:absolute;" >
+
+			<h4>Tendencias para ti</h4>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum quis voluptatem rerum velit modi, eius officiis doloribus quam aliquid tempora, et cupiditate eos. Nam at, commodi eveniet tenetur, vero aperiam.
+
+		</div>	

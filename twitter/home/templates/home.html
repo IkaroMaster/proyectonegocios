@@ -1,0 +1,342 @@
+{% extends "base_in.html" %}
+{% load static %}
+{% block contenido %}
+	
+
+<div class="row"  style="margin-top:10px;">
+
+<!--#################################################################################-->
+	<div class="col-md-3" style="margin-left:2%;">
+
+		<img src="/media/{{ perfil.portada }}" alt="Portada" tabindex="-1" width="100%" style="position:absolute;background-color: white;">
+		<div class="col-md-12" tabindex="" style="background-color:#FFFFFF; position:absolute;top:100px;" width="100%"  >
+			<div class="row">
+				<div class="col-md-4">
+
+				</div>
+				<div class="col-md-8">
+					<br>
+					<a  href="{% url 'home:perfil-url' perfil.id %}" ><h4 style="margin:0px;color:black;" ><strong>{{ user }}</strong></h4></a> #}
+					<a class="text-muted" href="{% url 'home:perfil-url' perfil.id %}"><h6 style="margin-top:0px;">@{{ user}}</h6></a>
+					
+
+				</div>
+			</div>
+			<br>
+			<div class="row" >
+				<div class="col-md-3">
+
+					<strong style="color:gray;">Tweets</strong>
+					<a style="color:#0C9BDD;" href=""><h3 style="margin-top:0px;">{{tweets_publicados.count}}</h3></a>
+
+				</div>
+				<div class="col-md-4">
+					<strong style="color:gray;">Siguiendo</strong>
+					<a style="color:#0C9BDD;" href=""><h3 class="seguidos" style="margin-top:0px;">
+					{% if seguidos.seguidos.all.count  %}
+						{{ seguidos.seguidos.all.count }}
+					{% else %}
+						0
+					{% endif %}</h3></a>
+				</div>
+				<div class="col-md-4">
+					<strong style="color:gray;">Seguidores</strong>
+					<a style="color:#0C9BDD;" href=""><h3 style="margin-top:0px;">{{ perfiles_siguiendome.count }}</h3></a>
+				</div>
+			</div>
+		</div>
+		<img src="/media/{{ perfil.avatar }}" alt="foto de perfil" class="" width="30%" style="border-radius:100%;border= 5px solid white;background-color: #717166;position:relative; margin-top:60px;margin-left:20px;padding:1px; ">
+
+		<div class="col-md-12" style="margin-top:130px; background-color:#FFFFFF; position:absolute;" >
+
+			<h4>Tendencias para ti</h4>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum quis voluptatem rerum velit modi, eius officiis doloribus quam aliquid tempora, et cupiditate eos. Nam at, commodi eveniet tenetur, vero aperiam.
+
+		</div>	
+
+	</div>
+
+<!--#################################################################################-->
+	<div class="col-md-5" style="margin-left:2%;background-color:#FFFFFF;">
+
+		<div style="background-color:#E8F4FA;">
+
+			<hr>
+			<form id="frmEnviarTweet" action="{% url 'home:enviar_tweet-url' %}" method="post">		
+				{% csrf_token %}
+				{{ formTweet.as_p }}
+				<input type="submit" value="Tweetear">
+			</form>
+			<br>
+
+		</div>
+		<!--/////////////////////////////////////////////-->
+		<div class="row">
+
+			
+		{% for t in tweets  %}
+			<div class="container"><hr></div>
+			<div class="row p-md-3 contenedorTweet" data-toggle="modal" data-target="#ModalComentarios" style="border:1px solid red" data-id="{{ t.id }}" data-url="{% url 'home:comentarios-url' %}">
+
+				<div class="col-md-2">
+					<img src="/media/{{t.perfil.avatar}}" alt="foto de perfil" width="100%" class="img-circle" style="border-radius:100%;">
+				</div>
+				<div class="col-md-10" >
+					<a href="" style="color:black;">
+						<span><strong>{{t.perfil.usuario.get_full_name}}</strong></span>
+					</a><span class="text-muted">@{{ t.perfil.usuario }}</span> .
+
+					{% if t.fecha_publicacion|timesince >= "23 horas" %}
+						<span class="text-muted">{{ t.fecha_publicacion|date:"d M" }}</span>
+					{% else %}
+						<span class="text-muted">{{ t.fecha_publicacion|timesince }}</span>
+					{% endif %}
+
+					<br>
+					<p>
+						{{ t.contenido }}
+					</p>
+					{% if t.multimedia %}
+						<div class="container">
+							<img src="/media/{{t.multimedia}}" alt="publicacion" width="100%" class="img-fluid">
+						</div>	
+						
+					{% endif %}
+					
+				</div>
+			</div>
+					<div class="row">
+						<div class="col-md-3"></div>
+						<div class="col-md-1">
+							<a href="" data-toggle="modal" data-target="#ModalComentario"
+									class="a-comentario"  
+									data-id="{{ t.id }}"
+									data-url="{% url 'home:comentario-url' %}">
+
+								<img src="{% static "img/comentario.png" %}" alt="" width="40px">
+							</a>
+						</div>
+
+						<div class="col-md-1">
+							<h5 id="contadorComentario{{t.id}}" style="margin-top:7px;color:gray;">
+							{% if t.comentario_set.count %}
+								{{t.comentario_set.count}}
+							{% else %}
+							{% endif %}
+							</h5>
+						</div>
+
+
+						<div class="col-md-1">
+							<img src="{% static "img/retweet.png" %}" alt="" width="40px">
+						</div>
+						<div class="col-md-1">
+							<h5 style="margin-top:7px;color:gray;">1</h5>
+						</div>
+
+
+
+						<div class="col-md-1">
+							<a href="" id="tweetLike{{t.id}}" 
+								class="a-like"  
+								data-id="{{ t.id }}"
+								data-url="{% url 'home:like-url' %}">
+
+
+								{% for me_gusto in t.like_set.all %}
+									{% if me_gusto.like == perfil %}
+									<div id="imgLike{{t.id}}">
+										<img src="{% static "img/like2.png" %}" alt="" width="25px">
+									</div>{{"<!--"}}
+									{% endif %}
+								{% endfor %}
+
+								{% for me_gusto in t.like_set.all %}
+									{% if me_gusto.like != perfil %}
+									<div id="imgLike{{t.id}}">
+										<img src="{% static "img/like.png" %}" alt="" width="40px">
+									</div>{{"<!--"}}
+									{% endif %}
+								{% empty %}
+								<div id="imgLike{{t.id}}">
+									<img src="{% static "img/like.png" %}" alt="" width="40px">
+								</div>{{'<!--'}}
+								{% endfor %}{{"-->"}} 
+
+							</a>
+						</div>
+						<div class="col-md-1">
+							<div id="idTweetLike{{t.id}}">
+								<h5 style="margin-top:7px;
+
+												{% for me_gusto in t.like_set.all %}
+
+												{% if me_gusto.like == perfil %}
+												color :red;	
+												{{ '/*' }}			
+												{%endif%}
+												{% if me_gusto.like != perfil  %}
+												color : gray;
+
+												{% endif %} 
+												{%endfor%}{{ '*/' }}
+
+												" >
+												{% if t.like_set.count > 0 %}
+													{{t.like_set.count}}
+												{% else %}
+												{% endif %}
+								</h5>
+							</div>
+						</div>
+
+						<div class="col-md-1">
+							<!--<a href="" 
+								data-toggle="modal" 
+								data-target="#ModalMensaje"
+								class="a-conversacion"  
+                  				data-id="{{ t.perfil.id }}"
+                 				data-url="{% url 'home:mensaje-url' %}">
+								<img src="{% static 'img/mensaje_tweet.png' %}" alt="" width="40px">
+							</a>-->
+						</div>
+						<div class="col-md-2"></div>
+
+
+
+					</div>
+
+			
+		{% endfor %}
+		
+		</div>	
+	</div>	
+
+
+<!--#################################################################################-->
+	<div class="col-md-3">
+
+		<div class="col-md-auto" style="margin-left:1%;background-color:#FFFFFF;position:absolute;">
+			<br>
+			<h3><strong>A quién seguir</strong></h3>
+
+			{% for p in perfiles  %}
+
+				{% if p.usuario != user %}
+				<div class="row" id="div-Seguir{{ p.id }}" >
+
+					<div class="col-md-4">
+						<img src="/media/{{ p.avatar }}" alt="Photo" style="border-radius:100%;" width="100%" >	
+					</div>
+					<div class="col-md-8">
+
+						<a href="" style="color:black;"><strong>{{ p.usuario.get_full_name }}</strong><span class="text-muted">@{{p.usuario}}</span></a>
+						<br>
+						<br>
+
+									{% for x in seguidos.seguidos.all %}
+										{% if p == x %}
+											<a href="" id="a-Seguir{{p.id}}" style="border-bottom-right-radius: 50%;border-bottom-left-radius:50%; " class="btn btn-info a-seguir" data-id="{{ p.id }}" data-url="{% url 'home:seguir-url' %}">Unfollow</a>{{"<!--"}}
+										{%endif%}
+									{% endfor %}
+
+									{% for x in seguidos.seguidos.all %}
+										{% if p != x %}
+											<a href="" id="a-Seguir{{p.id}}" style="border-bottom-right-radius: 50%;border-bottom-left-radius:50%; " class="btn btn-outline-info a-seguir" data-id="{{ p.id }}" data-url="{% url 'home:seguir-url' %}">Follow</a>{{"<!--"}}
+										{% endif %}
+									{% endfor %}{{"-->"}}
+									
+									
+
+						
+
+					</div>
+				</div>
+				{% endif %}
+
+			<hr>
+			{% endfor %}
+		</div>
+
+	</div>
+
+<!--#################################################################################-->
+<!--#################################################################################-->
+<!--#################################################################################-->
+<!--#################################################################################-->
+
+	<div class="modal fade" id="ModalComentario" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Respuesta a Tweet</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body ">
+					<div >
+						<div class="row">
+							<div class="col-md-12 tweetComentario"></div>
+							<div class="col-md-12 " style="background-color:#E5F4FB;">
+								<h5 class=" text-muted">En respuesta  a @<a href="" id="usuarioComentario"></a></small></h5>
+								<form action="{% url 'home:enviar_comentario-url' %}" id="frmEnviarComentario" method="post">
+									{% csrf_token %}
+									<div id="formTweetComentario"></div>
+									<input type="submit" value="Responder" class="btn-outline-info">
+								</form> 
+
+							</div>
+						</div>
+					</div>
+				</div>
+				 
+
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="ModalComentarios" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered  " role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Respuesta a Tweet</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+
+						<div >
+						<div class="row">
+							<div class="col-md-12 tweetComentarios"></div>
+							<div class="col-md-12 " style="background-color:#F5F8FA;">
+								<br>
+								<form action="{% url 'home:enviar_comentario-url' %}" id="frmEnviarComentarios" method="post">
+									{% csrf_token %}
+									<div id="formTweetComentarios"></div>
+									<input type="submit" value="Responder" class="btn-outline-info">
+								</form> 
+
+							</div>
+							<div class="col-md-12 Comentarios">
+								
+							</div>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+<!--#################################################################################-->
+<!--#################################################################################-->
+<!--#################################################################################-->
+<!--#################################################################################-->
+		
+{% endblock contenido %}
